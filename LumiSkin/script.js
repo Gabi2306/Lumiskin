@@ -766,46 +766,15 @@ function initChatbot() {
     chatButton.style.display = "flex"
   })
 
-  // Send message function
-  function sendMessageToBot() {
-    const message = chatInput.value.trim()
-    if (message === "") return
-
-    // Add user message to chat
-    addMessage(message, "user")
-    chatInput.value = ""
-
-    // Process the message and get response
-    setTimeout(() => {
-      const response = getBotResponse(message)
-      addMessage(response, "bot")
-    }, 500)
+  // User context to track conversation state
+  const userContext = {
+    skinType: null,
+    concerns: [],
+    askedQuestions: [],
+    currentTopic: null,
+    conversationStage: "greeting",
+    lastSuggestions: [], // Para almacenar las últimas sugerencias ofrecidas
   }
-
-  // Add message to chat
-  function addMessage(message, sender) {
-    const messageElement = document.createElement("div")
-    messageElement.className = `message ${sender}`
-    messageElement.innerHTML = `
-      <div class="message-content">
-        ${message}
-      </div>
-    `
-    chatMessages.appendChild(messageElement)
-    chatMessages.scrollTop = chatMessages.scrollHeight
-  }
-
-  // Send message on button click
-  chatSendBtn.addEventListener("click", sendMessageToBot)
-
-  // Send message on Enter key
-  chatInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      sendMessageToBot()
-    }
-  })
-
-  console.log("Chatbot inicializado correctamente")
 
   // Comprehensive skincare knowledge base
   const skincareKnowledge = [
@@ -1409,30 +1378,35 @@ function initChatbot() {
     },
   ]
 
-  // User context to track conversation state
-  const userContext = {
-    skinType: null,
-    concerns: [],
-    askedQuestions: [],
-    currentTopic: null,
-    conversationStage: "greeting",
+  // Send message function
+  function sendMessageToBot() {
+    const message = chatInput.value.trim()
+    if (message === "") return
+
+    // Add user message to chat
+    addMessage(message, "user")
+    chatInput.value = ""
+
+    // Process the message and get response
+    setTimeout(() => {
+      const response = getBotResponse(message)
+      addMessage(response, "bot")
+    }, 500)
   }
 
-  // Toggle chat window
-  chatButton.addEventListener("click", () => {
-    chatContainer.style.display = "flex"
-    chatButton.style.display = "none"
-    // Scroll to bottom of chat
+  // Add message to chat
+  function addMessage(message, sender) {
+    const messageElement = document.createElement("div")
+    messageElement.className = `message ${sender}`
+    messageElement.innerHTML = `
+      <div class="message-content">
+        ${message}
+      </div>
+    `
+    chatMessages.appendChild(messageElement)
     chatMessages.scrollTop = chatMessages.scrollHeight
-  })
+  }
 
-  // Close chat window
-  chatCloseBtn.addEventListener("click", () => {
-    chatContainer.style.display = "none"
-    chatButton.style.display = "flex"
-  })
-
-  // Send message function
   // Send message on button click
   chatSendBtn.addEventListener("click", sendMessageToBot)
 
@@ -1443,9 +1417,32 @@ function initChatbot() {
     }
   })
 
+  console.log("Chatbot inicializado correctamente")
+
   // Get bot response based on user input
   function getBotResponse(userInput) {
     userInput = userInput.toLowerCase()
+
+    // Verificar si la pregunta está relacionada con skincare o la empresa
+    if (!isSkincareRelated(userInput)) {
+      return "Lo siento, soy Lumi, un asistente especializado en skincare. Solo puedo responder preguntas relacionadas con el cuidado de la piel y nuestros productos. ¿Hay algo específico sobre skincare en lo que pueda ayudarte?"
+    }
+
+    // Verificar si el usuario está seleccionando una sugerencia por número
+    const suggestionNumber = extractSuggestionNumber(userInput)
+    if (suggestionNumber !== null && userContext.lastSuggestions.length > 0) {
+      if (suggestionNumber > 0 && suggestionNumber <= userContext.lastSuggestions.length) {
+        const selectedSuggestion = userContext.lastSuggestions[suggestionNumber - 1]
+        return handleSuggestionSelection(selectedSuggestion)
+      } else {
+        return `Lo siento, solo tengo ${userContext.lastSuggestions.length} opciones disponibles. Por favor, selecciona un número entre 1 y ${userContext.lastSuggestions.length}. También puedes preguntarme directamente sobre:
+        1. Recomendaciones para tu tipo de piel
+        2. Información sobre ingredientes
+        3. Rutinas de skincare
+        4. Consejos para problemas específicos
+        5. Recomendaciones de productos`
+      }
+    }
 
     // Check for greetings first
     for (const item of skincareKnowledge) {
@@ -1695,94 +1692,128 @@ function initChatbot() {
     }
 
     // Default response if no match is found
+    const suggestions = [
+      "Recomendaciones para tu tipo de piel",
+      "Información sobre ingredientes (retinol, vitamina C, ácido hialurónico, etc.)",
+      "Rutinas de skincare básicas o avanzadas",
+      "Consejos para problemas específicos (acné, arrugas, manchas, etc.)",
+      "Recomendaciones de productos",
+    ]
+
+    // Guardar las sugerencias en el contexto del usuario
+    userContext.lastSuggestions = suggestions
+
     return "No tengo información específica sobre eso. ¿Puedo ayudarte con alguna de estas opciones?\n\n1. Recomendaciones para tu tipo de piel\n2. Información sobre ingredientes (retinol, vitamina C, ácido hialurónico, etc.)\n3. Rutinas de skincare básicas o avanzadas\n4. Consejos para problemas específicos (acné, arrugas, manchas, etc.)\n5. Recomendaciones de productos"
   }
 
-  // Añadir esta nueva función para recomendaciones directas de productos
-  function getDirectProductRecommendations(skinType) {
-    let response = ""
+  // Función para verificar si la pregunta está relacionada con skincare o la empresa
+  function isSkincareRelated(userInput) {
+    const skincareKeywords = [
+      "piel",
+      "skin",
+      "cara",
+      "rostro",
+      "cutis",
+      "derma",
+      "dermis",
+      "epidermis",
+      "crema",
+      "serum",
+      "limpiador",
+      "tónico",
+      "mascarilla",
+      "exfoliante",
+      "hidratante",
+      "acné",
+      "arrugas",
+      "manchas",
+      "poros",
+      "espinillas",
+      "puntos negros",
+      "rojez",
+      "seca",
+      "grasa",
+      "mixta",
+      "sensible",
+      "normal",
+      "deshidratada",
+      "tirante",
+      "retinol",
+      "vitamina",
+      "ácido",
+      "hialurónico",
+      "niacinamida",
+      "salicílico",
+      "glicólico",
+      "rutina",
+      "skincare",
+      "cuidado",
+      "tratamiento",
+      "producto",
+      "ingrediente",
+      "lumiskin",
+      "lumi",
+      "comprar",
+      "precio",
+      "tienda",
+      "envío",
+      "pedido",
+      "producto",
+    ]
 
-    switch (skinType) {
-      case "oily":
-        response = "**Productos recomendados para piel grasa:**\n\n"
-        response +=
-          "1. **Limpiador Facial**: El **Limpiador Facial Suave** es ideal para limpiar sin resecar, o el **Tónico Exfoliante** que contiene ácidos que ayudan a controlar el exceso de sebo.\n\n"
-        response +=
-          "2. **Sérum**: El **Serum de Niacinamida 10%** es perfecto para piel grasa ya que regula la producción de sebo, reduce la apariencia de los poros y mejora el tono de la piel.\n\n"
-        response +=
-          "3. **Tratamiento**: El **Tratamiento Anti-Acné** combate el acné y previene nuevas erupciones, ideal para zonas problemáticas.\n\n"
-        response +=
-          "4. **Hidratante**: La **Crema Hidratante Ligera** proporciona hidratación sin sensación grasa, perfecta para pieles que producen exceso de sebo.\n\n"
-        response +=
-          "5. **Mascarilla**: La **Mascarilla de Arcilla Purificante** es excelente para usar 1-2 veces por semana para absorber el exceso de grasa y purificar los poros.\n\n"
-        response +=
-          "¿Te gustaría más información sobre alguno de estos productos o sobre cómo incorporarlos en tu rutina diaria?"
-        break
+    return skincareKeywords.some((keyword) => userInput.includes(keyword))
+  }
 
-      case "dry":
-        response = "**Productos recomendados para piel seca:**\n\n"
-        response +=
-          "1. **Limpiador Facial**: El **Limpiador Facial Suave** es perfecto para pieles secas ya que limpia sin eliminar los aceites naturales de la piel.\n\n"
-        response +=
-          "2. **Sérum**: El **Ácido Hialurónico Hidratante** proporciona hidratación intensa y ayuda a retener la humedad en la piel.\n\n"
-        response +=
-          "3. **Hidratante**: La **Crema Hidratante Ligera** o para casos más severos, el **Aceite Facial Nutritivo** que proporciona nutrición profunda.\n\n"
-        response +=
-          "4. **Tratamiento**: La **Crema Antiarrugas** contiene ingredientes hidratantes y antienvejecimiento, ideal para pieles secas que tienden a mostrar líneas finas.\n\n"
-        response += "¿Necesitas más detalles sobre alguno de estos productos o cómo usarlos en tu rutina diaria?"
-        break
+  // Función para extraer el número de sugerencia del input del usuario
+  function extractSuggestionNumber(userInput) {
+    // Buscar patrones como "1", "1.", "opción 1", "uno", etc.
 
-      case "combination":
-        response = "**Productos recomendados para piel mixta:**\n\n"
-        response +=
-          "1. **Limpiador Facial**: El **Limpiador Facial Suave** equilibra la piel sin resecar las zonas secas ni estimular más producción de grasa.\n\n"
-        response +=
-          "2. **Tónico**: El **Tónico Exfoliante** ayuda a equilibrar la producción de sebo en la zona T.\n\n"
-        response +=
-          "3. **Sérum**: El **Serum de Niacinamida 10%** es ideal para pieles mixtas ya que regula el sebo en zonas grasas mientras calma las áreas más secas.\n\n"
-        response +=
-          "4. **Hidratante**: La **Crema Hidratante Ligera** proporciona hidratación equilibrada para todo el rostro.\n\n"
-        response +=
-          "5. **Mascarilla**: Puedes usar la **Mascarilla de Arcilla Purificante** en la zona T y otro producto más hidratante en las mejillas.\n\n"
-        response +=
-          "¿Te gustaría saber más sobre alguno de estos productos o cómo adaptar tu rutina para tu piel mixta?"
-        break
-
-      case "sensitive":
-        response = "**Productos recomendados para piel sensible:**\n\n"
-        response +=
-          "1. **Limpiador Facial**: El **Limpiador Facial Suave** está formulado sin irritantes y es perfecto para pieles sensibles.\n\n"
-        response +=
-          "2. **Exfoliante**: El **Exfoliante Facial Enzimático** ofrece una exfoliación suave sin irritar la piel.\n\n"
-        response +=
-          "3. **Hidratante**: La **Crema Hidratante Ligera** o el **Ácido Hialurónico Hidratante** proporcionan hidratación sin ingredientes irritantes.\n\n"
-        response +=
-          "4. **Protección**: El **Protector Solar SPF 50** protege la piel sensible de los daños solares que pueden empeorar la irritación.\n\n"
-        response +=
-          "¿Quieres más información sobre estos productos o consejos específicos para cuidar tu piel sensible?"
-        break
-
-      case "normal":
-        response = "**Productos recomendados para piel normal:**\n\n"
-        response +=
-          "1. **Limpiador Facial**: El **Limpiador Facial Suave** mantiene el equilibrio natural de la piel.\n\n"
-        response +=
-          "2. **Sérum**: El **Ácido Hialurónico Hidratante** o el **Serum de Niacinamida 10%** son excelentes para mantener la piel hidratada y saludable.\n\n"
-        response +=
-          "3. **Hidratante**: La **Crema Hidratante Ligera** proporciona la hidratación justa que necesita tu piel.\n\n"
-        response +=
-          "4. **Tratamiento**: La **Crema Antiarrugas** puede usarse preventivamente para mantener la piel joven.\n\n"
-        response +=
-          "5. **Protección**: El **Protector Solar SPF 50** es esencial para prevenir el envejecimiento prematuro y mantener la piel saludable.\n\n"
-        response += "¿Hay algún producto específico sobre el que te gustaría más información?"
-        break
-
-      default:
-        response =
-          "Lo siento, no tengo recomendaciones específicas para ese tipo de piel. ¿Puedes especificar si tu piel es seca, grasa, mixta, sensible o normal?"
+    // Patrón para números arábigos (1, 2, 3...)
+    const arabicMatch = userInput.match(/\b([1-9])\b|\b([1-9])\.|\bopción\s+([1-9])\b|\bopcion\s+([1-9])\b/)
+    if (arabicMatch) {
+      const number = arabicMatch[1] || arabicMatch[2] || arabicMatch[3] || arabicMatch[4]
+      return Number.parseInt(number)
     }
 
-    return response
+    // Patrón para números escritos en texto (uno, dos, tres...)
+    const textNumbers = {
+      uno: 1,
+      dos: 2,
+      tres: 3,
+      cuatro: 4,
+      cinco: 5,
+      seis: 6,
+      siete: 7,
+      ocho: 8,
+      nueve: 9,
+    }
+
+    for (const [text, number] of Object.entries(textNumbers)) {
+      if (userInput.includes(text)) {
+        return number
+      }
+    }
+
+    return null
+  }
+
+  // Función para manejar la selección de sugerencias
+  function handleSuggestionSelection(suggestion) {
+    if (suggestion.includes("tipo de piel")) {
+      userContext.currentTopic = "ask-skin-type"
+      return "¿Podrías decirme cuál es tu tipo de piel (seca, grasa, mixta, sensible o normal)? Así podré ofrecerte recomendaciones personalizadas."
+    } else if (suggestion.includes("ingredientes")) {
+      return "¿Sobre qué ingrediente te gustaría saber más? Puedo informarte sobre retinol, vitamina C, ácido hialurónico, niacinamida, ácido salicílico, AHAs, péptidos, entre otros."
+    } else if (suggestion.includes("rutinas")) {
+      return "Puedo ayudarte con rutinas de skincare básicas o avanzadas. ¿Prefieres una rutina simple para principiantes o una más completa con múltiples pasos?"
+    } else if (suggestion.includes("problemas específicos")) {
+      return "¿Qué problema específico te preocupa? Puedo ayudarte con acné, arrugas, manchas, poros dilatados, rojez, entre otros."
+    } else if (suggestion.includes("recomendaciones de productos")) {
+      userContext.currentTopic = "ask-skin-type"
+      return "Para recomendarte los productos más adecuados, necesito saber tu tipo de piel. ¿Es seca, grasa, mixta, sensible o normal?"
+    } else {
+      return "No entendí tu selección. ¿Podrías reformular tu pregunta?"
+    }
   }
 
   // Helper function to check if the user input contains any of the keywords
@@ -1916,6 +1947,92 @@ function initChatbot() {
     return recommendations
   }
 
+  // Añadir esta nueva función para recomendaciones directas de productos
+  function getDirectProductRecommendations(skinType) {
+    let response = ""
+
+    switch (skinType) {
+      case "oily":
+        response = "**Productos recomendados para piel grasa:**\n\n"
+        response +=
+          "1. **Limpiador Facial**: El **Limpiador Facial Suave** es ideal para limpiar sin resecar, o el **Tónico Exfoliante** que contiene ácidos que ayudan a controlar el exceso de sebo.\n\n"
+        response +=
+          "2. **Sérum**: El **Serum de Niacinamida 10%** es perfecto para piel grasa ya que regula la producción de sebo, reduce la apariencia de los poros y mejora el tono de la piel.\n\n"
+        response +=
+          "3. **Tratamiento**: El **Tratamiento Anti-Acné** combate el acné y previene nuevas erupciones, ideal para zonas problemáticas.\n\n"
+        response +=
+          "4. **Hidratante**: La **Crema Hidratante Ligera** proporciona hidratación sin sensación grasa, perfecta para pieles que producen exceso de sebo.\n\n"
+        response +=
+          "5. **Mascarilla**: La **Mascarilla de Arcilla Purificante** es excelente para usar 1-2 veces por semana para absorber el exceso de grasa y purificar los poros.\n\n"
+        response +=
+          "¿Te gustaría más información sobre alguno de estos productos o sobre cómo incorporarlos en tu rutina diaria?"
+        break
+
+      case "dry":
+        response = "**Productos recomendados para piel seca:**\n\n"
+        response +=
+          "1. **Limpiador Facial**: El **Limpiador Facial Suave** es perfecto para pieles secas ya que limpia sin eliminar los aceites naturales de la piel.\n\n"
+        response +=
+          "2. **Sérum**: El **Ácido Hialurónico Hidratante** proporciona hidratación intensa y ayuda a retener la humedad en la piel.\n\n"
+        response +=
+          "3. **Hidratante**: La **Crema Hidratante Ligera** o para casos más severos, el **Aceite Facial Nutritivo** que proporciona nutrición profunda.\n\n"
+        response +=
+          "4. **Tratamiento**: La **Crema Antiarrugas** contiene ingredientes hidratantes y antienvejecimiento, ideal para pieles secas que tienden a mostrar líneas finas.\n\n"
+        response += "¿Necesitas más detalles sobre alguno de estos productos o cómo usarlos en tu rutina diaria?"
+        break
+
+      case "combination":
+        response = "**Productos recomendados para piel mixta:**\n\n"
+        response +=
+          "1. **Limpiador Facial**: El **Limpiador Facial Suave** equilibra la piel sin resecar las zonas secas ni estimular más producción de grasa.\n\n"
+        response += "2. **Tónico**: El **Tónico Exfoliante** ayuda a equilibrar la producción de sebo en la zona T.\n\n"
+        response +=
+          "3. **Sérum**: El **Serum de Niacinamida 10%** es ideal para pieles mixtas ya que regula el sebo en zonas grasas mientras calma las áreas más secas.\n\n"
+        response +=
+          "4. **Hidratante**: La **Crema Hidratante Ligera** proporciona hidratación equilibrada para todo el rostro.\n\n"
+        response +=
+          "5. **Mascarilla**: Puedes usar la **Mascarilla de Arcilla Purificante** en la zona T y otro producto más hidratante en las mejillas.\n\n"
+        response +=
+          "¿Te gustaría saber más sobre alguno de estos productos o cómo adaptar tu rutina para tu piel mixta?"
+        break
+
+      case "sensitive":
+        response = "**Productos recomendados para piel sensible:**\n\n"
+        response +=
+          "1. **Limpiador Facial**: El **Limpiador Facial Suave** está formulado sin irritantes y es perfecto para pieles sensibles.\n\n"
+        response +=
+          "2. **Exfoliante**: El **Exfoliante Facial Enzimático** ofrece una exfoliación suave sin irritar la piel.\n\n"
+        response +=
+          "3. **Hidratante**: La **Crema Hidratante Ligera** o el **Ácido Hialurónico Hidratante** proporcionan hidratación sin ingredientes irritantes.\n\n"
+        response +=
+          "4. **Protección**: El **Protector Solar SPF 50** protege la piel sensible de los daños solares que pueden empeorar la irritación.\n\n"
+        response +=
+          "¿Quieres más información sobre estos productos o consejos específicos para cuidar tu piel sensible?"
+        break
+
+      case "normal":
+        response = "**Productos recomendados para piel normal:**\n\n"
+        response +=
+          "1. **Limpiador Facial**: El **Limpiador Facial Suave** mantiene el equilibrio natural de la piel.\n\n"
+        response +=
+          "2. **Sérum**: El **Ácido Hialurónico Hidratante** o el **Serum de Niacinamida 10%** son excelentes para mantener la piel hidratada y saludable.\n\n"
+        response +=
+          "3. **Hidratante**: La **Crema Hidratante Ligera** proporciona la hidratación justa que necesita tu piel.\n\n"
+        response +=
+          "4. **Tratamiento**: La **Crema Antiarrugas** puede usarse preventivamente para mantener la piel joven.\n\n"
+        response +=
+          "5. **Protección**: El **Protector Solar SPF 50** es esencial para prevenir el envejecimiento prematuro y mantener la piel saludable.\n\n"
+        response += "¿Hay algún producto específico sobre el que te gustaría más información?"
+        break
+
+      default:
+        response =
+          "Lo siento, no tengo recomendaciones específicas para ese tipo de piel. ¿Puedes especificar si tu piel es seca, grasa, mixta, sensible o normal?"
+    }
+
+    return response
+  }
+
   // Helper function to capitalize the first letter of a string
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
@@ -1933,14 +2050,6 @@ function initChatbot() {
 // Initialize when DOM is loaded
 document.addEventListener("DOMContentLoaded", initPage)
 
-// Add CSS for notifications
 // Initialize chatbot
 initChatbot()
 
-
-
-
-  
-  
-  
-  
