@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LumiSkin - Cuidado avanzado para tu piel</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">LumiSkin</div>
+            <div class="nav-links">
+                <a href="index.html" class="active">Inicio</a>
+                <a href="catalogue.html">Productos</a>
+                <a href="#">Sobre Nosotros</a>
+                <a href="#">Contacto</a>
+            </div>
+            <div class="cart-icon">
+                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>LumiSkin</h1>
+                <p class="slogan">Cuidado avanzado para una piel radiante, saludable y llena de vida, combinando ciencia, innovación y los mejores ingredientes de la naturaleza.</p>
+                <a href="catalogue.html" class="btn">Descubrir Productos</a>
+            </div>
+        </section>
+
+        <section class="featured-categories">
+            <h2>Categorías Destacadas</h2>
+            <div class="category-container">
+                <div class="category">
+                    <img src="images/cleansers.jpg" alt="Limpiadores">
+                    <h3>Limpiadores</h3>
+                    <a href="catalogue.html?category=cleansers" class="btn-small">Ver Productos</a>
+                </div>
+                <div class="category">
+                    <img src="images/serums.jpg" alt="Serums">
+                    <h3>Serums</h3>
+                    <a href="catalogue.html?category=serums" class="btn-small">Ver Productos</a>
+                </div>
+                <div class="category">
+                    <img src="images/moisturizers.jpg" alt="Hidratantes">
+                    <h3>Hidratantes</h3>
+                    <a href="catalogue.html?category=moisturizers" class="btn-small">Ver Productos</a>
+                </div>
+                <div class="category">
+                    <img src="images/treatments.jpg" alt="Tratamientos">
+                    <h3>Tratamientos</h3>
+                    <a href="catalogue.html?category=treatments" class="btn-small">Ver Productos</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="benefits">
+            <h2>Por qué elegir LumiSkin</h2>
+            <div class="benefits-container">
+                <div class="benefit">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Ingredientes Naturales</h3>
+                    <p>Formulados con los mejores ingredientes que la naturaleza ofrece.</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-flask"></i>
+                    <h3>Ciencia Avanzada</h3>
+                    <p>Respaldados por investigación científica de vanguardia.</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-ban"></i>
+                    <h3>Sin Crueldad Animal</h3>
+                    <p>Nunca testamos en animales, solo en voluntarios humanos.</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-recycle"></i>
+                    <h3>Eco-Friendly</h3>
+                    <p>Comprometidos con envases sostenibles y reciclables.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>LumiSkin</h3>
+                <p>Cuidado avanzado para tu piel.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="catalogue.html">Productos</a></li>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d6bfb8b0b996baa3bbbfa5bdbfb8f8b5b9bb">[email&#160;protected]</a></p>
+                <p><i class="fas fa-phone"></i> +34 123 456 789</p>
+                <p><i class="fas fa-map-marker-alt"></i> Calle Principal 123, Madrid</p>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Suscríbete para recibir noticias y ofertas exclusivas.</p>
+                <form>
+                    <input type="email" placeholder="Tu email">
+                    <button type="submit" class="btn-small">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LumiSkin. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+   <!-- Chatbot -->
+      <div class="chat-container" id="chat-container" style="display: none;">
+       <div class="chat-header">
+           <div class="chat-title">
+               <img src="images/lumi-avatar.jpg" alt="Lumi" class="chat-avatar">
+               <div>
+                   <h3>Lumi</h3>
+                   <p>Asistente de Skincare</p>
+               </div>
+           </div>
+           <button id="chat-close-btn"><i class="fas fa-times"></i></button>
+       </div>
+       <div class="chat-messages" id="chat-messages">
+           <div class="message bot">
+               <div class="message-content">
+                   ¡Hola! Soy Lumi, tu asistente virtual de skincare. ¿En qué puedo ayudarte hoy?
+               </div>
+           </div>
+       </div>
+       <div class="chat-input">
+           <input type="text" id="chat-input" placeholder="Escribe tu pregunta aquí...">
+           <button id="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+       </div>
+   </div>
+   <button class="chat-button" id="chat-button" style="display: flex;">
+       <i class="fas fa-comment-dots"></i>
+   </button>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="script.js"></script>
+</body>
+</html>
+

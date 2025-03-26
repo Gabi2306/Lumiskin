@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - LumiSkin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">LumiSkin</div>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="catalogue.html">Productos</a>
+                <a href="#">Sobre Nosotros</a>
+                <a href="#">Contacto</a>
+            </div>
+            <div class="cart-icon">
+                <a href="cart.html" class="active"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="cart-main">
+        <h1>Tu Carrito de Compras</h1>
+        
+        <div class="cart-container" id="cart-items-container">
+            <!-- Cart items will be loaded dynamically with JavaScript -->
+            <div class="empty-cart" id="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Tu carrito está vacío</p>
+                <a href="catalogue.html" class="btn">Explorar Productos</a>
+            </div>
+        </div>
+
+        <div class="cart-summary" id="cart-summary">
+            <h2>Resumen del Pedido</h2>
+            <div class="summary-item">
+                <span>Subtotal:</span>
+                <span id="subtotal">0.00$</span>
+            </div>
+            <div class="summary-item">
+                <span>Envío:</span>
+                <span id="shipping">0.00$</span>
+            </div>
+            <div class="summary-item total">
+                <span>Total:</span>
+                <span id="total">0.00$</span>
+            </div>
+            <a href="shipping.html" class="btn" id="checkout-btn">Proceder al Pago</a>
+            <a href="catalogue.html" class="btn-secondary">Continuar Comprando</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>LumiSkin</h3>
+                <p>Cuidado avanzado para tu piel.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="catalogue.html">Productos</a></li>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6b02050d042b071e06021800020545080406">[email&#160;protected]</a></p>
+                <p><i class="fas fa-phone"></i> +34 123 456 789</p>
+                <p><i class="fas fa-map-marker-alt"></i> Calle Principal 123, Madrid</p>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Suscríbete para recibir noticias y ofertas exclusivas.</p>
+                <form>
+                    <input type="email" placeholder="Tu email">
+                    <button type="submit" class="btn-small">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LumiSkin. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chat-container" id="chat-container">
+        <div class="chat-header">
+            <div class="chat-title">
+                <img src="images/lumi-avatar.jpg" alt="Lumi" class="chat-avatar">
+                <div>
+                    <h3>Lumi</h3>
+                    <p>Asistente de Skincare</p>
+                </div>
+            </div>
+            <button id="chat-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot">
+                <div class="message-content">
+                    ¡Hola! Soy Lumi, tu asistente virtual de skincare. ¿En qué puedo ayudarte hoy?
+                </div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Escribe tu pregunta aquí...">
+            <button id="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button class="chat-button" id="chat-button">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="script.js"></script>
+</body>
+</html>
+

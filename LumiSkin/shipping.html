@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos de Envío - LumiSkin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">LumiSkin</div>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="catalogue.html">Productos</a>
+                <a href="#">Sobre Nosotros</a>
+                <a href="#">Contacto</a>
+            </div>
+            <div class="cart-icon">
+                <a href="cart.html"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="checkout-main">
+        <div class="checkout-progress">
+            <div class="progress-step active">
+                <div class="step-number">1</div>
+                <div class="step-name">Carrito</div>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step active">
+                <div class="step-number">2</div>
+                <div class="step-name">Envío</div>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step">
+                <div class="step-number">3</div>
+                <div class="step-name">Pago</div>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step">
+                <div class="step-number">4</div>
+                <div class="step-name">Confirmación</div>
+            </div>
+        </div>
+
+        <div class="checkout-container">
+            <div class="shipping-form">
+                <h1>Datos de Envío</h1>
+                <form id="shipping-form">
+                    <div class="form-group">
+                        <label for="fullname">Nombre Completo</label>
+                        <input type="text" id="fullname" name="fullname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Dirección</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">Ciudad</label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postal">Código Postal</label>
+                            <input type="text" id="postal" name="postal" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">País</label>
+                        <select id="country" name="country" required>
+                            <option value="">Selecciona un país</option>
+                            <option value="ES">España</option>
+                            <option value="MX">México</option>
+                            <option value="AR">Argentina</option>
+                            <option value="CO">Colombia</option>
+                            <option value="CL">Chile</option>
+                            <option value="PE">Perú</option>
+                            <option value="US">Estados Unidos</option>
+                        </select>
+                    </div>
+                    <div class="form-group shipping-options">
+                        <label>Método de Envío</label>
+                        <div class="shipping-option">
+                            <input type="radio" id="standard" name="shipping" value="standard" checked>
+                            <label for="standard">
+                                <div class="option-info">
+                                    <span class="option-name">Envío Estándar</span>
+                                    <span class="option-desc">3-5 días laborables</span>
+                                </div>
+                                <span class="option-price">7.000$</span>
+                            </label>
+                        </div>
+                        <div class="shipping-option">
+                            <input type="radio" id="express" name="shipping" value="express">
+                            <label for="express">
+                                <div class="option-info">
+                                    <span class="option-name">Envío Express</span>
+                                    <span class="option-desc">1-2 días laborables</span>
+                                </div>
+                                <span class="option-price">12.000$</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a href="cart.html" class="btn-secondary">Volver al Carrito</a>
+                        <a href="payment.html" class="btn" id="to-payment-btn">Continuar al Pago</a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="order-summary">
+                <h2>Resumen del Pedido</h2>
+                <div id="order-items">
+                    <!-- Order items will be loaded dynamically with JavaScript -->
+                </div>
+                <div class="summary-totals">
+                    <div class="summary-item">
+                        <span>Subtotal:</span>
+                        <span id="summary-subtotal">0.00$</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Envío:</span>
+                        <span id="summary-shipping">7.000$</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total:</span>
+                        <span id="summary-total">0.00$</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>LumiSkin</h3>
+                <p>Cuidado avanzado para tu piel.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="catalogue.html">Productos</a></li>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2841464e4768445d45415b434146064b4745">[email&#160;protected]</a></p>
+                <p><i class="fas fa-phone"></i> +34 123 456 789</p>
+                <p><i class="fas fa-map-marker-alt"></i> Calle Principal 123, Madrid</p>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Suscríbete para recibir noticias y ofertas exclusivas.</p>
+                <form>
+                    <input type="email" placeholder="Tu email">
+                    <button type="submit" class="btn-small">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LumiSkin. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chat-container" id="chat-container">
+        <div class="chat-header">
+            <div class="chat-title">
+                <img src="images/lumi-avatar.jpg" alt="Lumi" class="chat-avatar">
+                <div>
+                    <h3>Lumi</h3>
+                    <p>Asistente de Skincare</p>
+                </div>
+            </div>
+            <button id="chat-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot">
+                <div class="message-content">
+                    ¡Hola! Soy Lumi, tu asistente virtual de skincare. ¿En qué puedo ayudarte hoy?
+                </div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Escribe tu pregunta aquí...">
+            <button id="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button class="chat-button" id="chat-button">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="script.js"></script>
+</body>
+</html>
+
