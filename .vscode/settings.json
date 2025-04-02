@@ -1,8 +1,0 @@
-{
-    "java.project.sourcePaths": [
-        "Arc. Software/kube-app/backend/src"
-    ],
-    "java.project.referencedLibraries": [],
-    "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
-}
