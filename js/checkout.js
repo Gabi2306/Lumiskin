@@ -16,11 +16,11 @@ function renderOrderSummary() {
   const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0)
   const shipping = document.querySelector('input[name="shipping"]:checked')
     ? document.querySelector('input[name="shipping"]:checked').value === "express"
-      ? 9.99
-      : 4.99
+      ? 12000.00
+      : 7000.00
     : subtotal > 50
       ? 0
-      : 4.99
+      : 7.000
   const total = subtotal + shipping
 
   // Update summary

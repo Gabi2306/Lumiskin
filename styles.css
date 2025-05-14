@@ -132,6 +132,12 @@ nav {
   color: var(--secondary-color);
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 .nav-links {
   display: flex;
   gap: 2rem;
@@ -917,9 +923,13 @@ footer {
     gap: 1rem;
   }
 
-  .nav-links {
+  .nav-right {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .nav-links {
+    gap: 1rem;
   }
 
   .cart-item {

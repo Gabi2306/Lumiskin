@@ -28,7 +28,7 @@ function renderProducts(productsToRender = products) {
           <div class="product-info">
               <div class="product-category">${getCategoryName(product.category)}</div>
               <h3 class="product-title">${product.name}</h3>
-              <div class="product-price">${product.price.toFixed(2)}$</div>
+              <div class="product-price">${(product.price/1000).toFixed(3)}$</div>
               <div class="product-actions">
                   <button class="btn-small add-to-cart-btn" data-id="${product.id}">Añadir al Carrito</button>
                   <button class="btn-small view-product-btn" data-id="${product.id}">Ver Detalles</button>
@@ -100,6 +100,29 @@ function filterProducts() {
   renderProducts(filteredProducts)
 }
 
+// Parse URL parameters and apply filters
+function applyUrlFilters() {
+  const urlParams = new URLSearchParams(window.location.search)
+  const categoryParam = urlParams.get('category')
+  
+  if (categoryParam) {
+    // Uncheck "all" checkbox
+    const allCategoryCheckbox = document.querySelector('input[name="category"][value="all"]')
+    if (allCategoryCheckbox) {
+      allCategoryCheckbox.checked = false
+    }
+    
+    // Check the specific category checkbox
+    const categoryCheckbox = document.querySelector(`input[name="category"][value="${categoryParam}"]`)
+    if (categoryCheckbox) {
+      categoryCheckbox.checked = true
+      
+      // Apply filters immediately
+      filterProducts()
+    }
+  }
+}
+
 // Initialize catalogue page
 function initCataloguePage() {
   renderProducts()
@@ -122,7 +145,7 @@ function initCataloguePage() {
 
   if (priceRange && priceValue) {
     priceRange.addEventListener("input", () => {
-      priceValue.textContent = `${priceRange.value}$`
+      priceValue.textContent = `${(priceRange.value/1000).toFixed(3)}$`
     })
   }
 
@@ -177,8 +200,10 @@ function initCataloguePage() {
       })
     })
   }
+  
+  // Apply filters from URL parameters
+  applyUrlFilters()
 }
 
 // Exportar funciones
 export { renderProducts, filterProducts, initCataloguePage }
-
