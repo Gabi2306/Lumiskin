@@ -1,7 +1,6 @@
 import { products, getCategoryName } from "./products.js"
 import { addToCart } from "./cart.js"
 
-// Render products on catalogue page
 function renderProducts(productsToRender = products) {
   const productContainer = document.getElementById("product-container")
   if (!productContainer) return
@@ -39,7 +38,6 @@ function renderProducts(productsToRender = products) {
     productContainer.appendChild(productCard)
   })
 
-  // Add event listeners to add to cart buttons
   const addToCartButtons = document.querySelectorAll(".add-to-cart-btn")
   addToCartButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
@@ -49,14 +47,12 @@ function renderProducts(productsToRender = products) {
   })
 }
 
-// Filter products
 function filterProducts() {
   const searchInput = document.getElementById("search-input")
   const priceRange = document.getElementById("price-range")
 
   let filteredProducts = [...products]
 
-  // Filter by search term
   if (searchInput && searchInput.value) {
     const searchTerm = searchInput.value.toLowerCase()
     filteredProducts = filteredProducts.filter(
@@ -65,13 +61,11 @@ function filterProducts() {
     )
   }
 
-  // Filter by price
   if (priceRange) {
     const maxPrice = Number.parseInt(priceRange.value)
     filteredProducts = filteredProducts.filter((product) => product.price <= maxPrice)
   }
 
-  // Filter by category
   const selectedCategories = []
   document.querySelectorAll('input[name="category"]:checked').forEach((checkbox) => {
     if (checkbox.value !== "all") {
@@ -83,7 +77,6 @@ function filterProducts() {
     filteredProducts = filteredProducts.filter((product) => selectedCategories.includes(product.category))
   }
 
-  // Filter by skin type
   const selectedSkinTypes = []
   document.querySelectorAll('input[name="skin-type"]:checked').forEach((checkbox) => {
     if (checkbox.value !== "all") {
@@ -100,34 +93,28 @@ function filterProducts() {
   renderProducts(filteredProducts)
 }
 
-// Parse URL parameters and apply filters
 function applyUrlFilters() {
   const urlParams = new URLSearchParams(window.location.search)
   const categoryParam = urlParams.get('category')
   
   if (categoryParam) {
-    // Uncheck "all" checkbox
     const allCategoryCheckbox = document.querySelector('input[name="category"][value="all"]')
     if (allCategoryCheckbox) {
       allCategoryCheckbox.checked = false
     }
-    
-    // Check the specific category checkbox
+
     const categoryCheckbox = document.querySelector(`input[name="category"][value="${categoryParam}"]`)
     if (categoryCheckbox) {
       categoryCheckbox.checked = true
-      
-      // Apply filters immediately
+
       filterProducts()
     }
   }
 }
 
-// Initialize catalogue page
 function initCataloguePage() {
   renderProducts()
 
-  // Add event listeners for filters
   const searchInput = document.getElementById("search-input")
   const searchBtn = document.getElementById("search-btn")
   const priceRange = document.getElementById("price-range")
@@ -153,7 +140,6 @@ function initCataloguePage() {
     applyFiltersBtn.addEventListener("click", filterProducts)
   }
 
-  // Initialize category checkboxes
   const allCategoryCheckbox = document.querySelector('input[name="category"][value="all"]')
   const categoryCheckboxes = document.querySelectorAll('input[name="category"]:not([value="all"])')
 
@@ -177,7 +163,6 @@ function initCataloguePage() {
     })
   }
 
-  // Initialize skin type checkboxes
   const allSkinTypeCheckbox = document.querySelector('input[name="skin-type"][value="all"]')
   const skinTypeCheckboxes = document.querySelectorAll('input[name="skin-type"]:not([value="all"])')
 
@@ -200,10 +185,8 @@ function initCataloguePage() {
       })
     })
   }
-  
-  // Apply filters from URL parameters
+
   applyUrlFilters()
 }
 
-// Exportar funciones
 export { renderProducts, filterProducts, initCataloguePage }

@@ -1,4 +1,3 @@
-// Show notification
 function showNotification(message) {
     const notification = document.createElement("div")
     notification.className = "notification"
@@ -6,12 +5,10 @@ function showNotification(message) {
   
     document.body.appendChild(notification)
   
-    // Show notification
     setTimeout(() => {
       notification.classList.add("show")
     }, 10)
-  
-    // Hide and remove notification
+
     setTimeout(() => {
       notification.classList.remove("show")
       setTimeout(() => {
@@ -19,8 +16,7 @@ function showNotification(message) {
       }, 300)
     }, 3000)
   }
-  
-  // Add CSS for notifications and chatbot
+
   function addStyles() {
     const styleElement = document.createElement("style")
     styleElement.textContent = `
@@ -93,8 +89,7 @@ function showNotification(message) {
     `
     document.head.appendChild(styleElement)
   }
-  
-  // Exportar funciones
+
   export { showNotification, addStyles }
   
   

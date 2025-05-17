@@ -1,4 +1,3 @@
-// Datos de productos
 const products = [
     {
       id: 1,
@@ -121,8 +120,7 @@ const products = [
       featured: true,
     },
   ]
-  
-  // Get category name in Spanish
+
   function getCategoryName(category) {
     const categories = {
       cleansers: "Limpiadores",
@@ -136,8 +134,7 @@ const products = [
   
     return categories[category] || category
   }
-  
-  // Exportar funciones y datos
+
   export { products, getCategoryName }
   
   

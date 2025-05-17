@@ -1,10 +1,8 @@
 import { products } from "./products.js"
 import { showNotification } from "./ui.js"
 
-// Initialize cart from localStorage or create empty cart
 const cart = JSON.parse(localStorage.getItem("cart")) || []
 
-// Update cart count in the header
 function updateCartCount() {
   const cartCount = document.getElementById("cart-count")
   if (cartCount) {
@@ -13,7 +11,6 @@ function updateCartCount() {
   }
 }
 
-// Add to cart function
 function addToCart(productId, quantity = 1) {
   const product = products.find((p) => p.id === productId)
   if (!product) return
@@ -32,65 +29,51 @@ function addToCart(productId, quantity = 1) {
     })
   }
 
-  // Save cart to localStorage
   localStorage.setItem("cart", JSON.stringify(cart))
 
-  // Update cart count
   updateCartCount()
 
-  // Show notification
   showNotification(`${product.name} añadido al carrito`)
 }
 
-// Remove from cart function
 function removeFromCart(productId) {
   const index = cart.findIndex((item) => item.id === productId)
   if (index !== -1) {
     const product = cart[index]
     cart.splice(index, 1)
 
-    // Save cart to localStorage
     localStorage.setItem("cart", JSON.stringify(cart))
 
-    // Update cart count
     updateCartCount()
 
-    // Show notification
     showNotification(`${product.name} eliminado del carrito`)
 
-    // Refresh cart page if we're on it
     if (window.location.pathname.includes("cart.html")) {
       renderCart()
     }
   }
 }
 
-// Update item quantity in cart
 function updateCartItemQuantity(productId, quantity) {
   const item = cart.find((item) => item.id === productId)
   if (item) {
     item.quantity = quantity
 
-    // If quantity is 0, remove item
     if (quantity <= 0) {
       removeFromCart(productId)
       return
     }
 
-    // Save cart to localStorage
     localStorage.setItem("cart", JSON.stringify(cart))
 
-    // Update cart count
     updateCartCount()
 
-    // Refresh cart page if we're on it
     if (window.location.pathname.includes("cart.html")) {
       renderCart()
     }
   }
 }
 
-// Render cart items
 function renderCart() {
   const cartItemsContainer = document.getElementById("cart-items-container")
   const cartSummary = document.getElementById("cart-summary")
@@ -98,26 +81,21 @@ function renderCart() {
 
   if (!cartItemsContainer) return
 
-  // Clear previous items
   cartItemsContainer.innerHTML = ""
 
   if (cart.length === 0) {
-    // Show empty cart message
     if (emptyCart) emptyCart.style.display = "block"
     if (cartSummary) cartSummary.style.display = "none"
     return
   }
 
-  // Hide empty cart message and show summary
   if (emptyCart) emptyCart.style.display = "none"
   if (cartSummary) cartSummary.style.display = "block"
 
-  // Calculate totals
   const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0)
   const shipping = subtotal > 50 ? 0 : 4.99
   const total = subtotal + shipping
 
-  // Update summary
   const subtotalElement = document.getElementById("subtotal")
   const shippingElement = document.getElementById("shipping")
   const totalElement = document.getElementById("total")
@@ -126,7 +104,6 @@ function renderCart() {
   if (shippingElement) shippingElement.textContent = shipping === 0 ? "Gratis" : `${shipping.toFixed(2)}$`
   if (totalElement) totalElement.textContent = `${total.toFixed(2)}$`
 
-  // Render cart items
   cart.forEach((item) => {
     const cartItem = document.createElement("div")
     cartItem.className = "cart-item"
@@ -153,7 +130,6 @@ function renderCart() {
     cartItemsContainer.appendChild(cartItem)
   })
 
-  // Add event listeners to quantity buttons
   const decreaseButtons = document.querySelectorAll(".quantity-btn.decrease")
   const increaseButtons = document.querySelectorAll(".quantity-btn.increase")
   const quantityInputs = document.querySelectorAll(".quantity-input")
@@ -200,6 +176,5 @@ function renderCart() {
   })
 }
 
-// Exportar funciones y datos
 export { cart, updateCartCount, addToCart, removeFromCart, updateCartItemQuantity, renderCart }
 
